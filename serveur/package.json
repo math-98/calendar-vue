@@ -1,14 +1,12 @@
 {
-  "name": "tp4",
+  "name": "calendar-js-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Le serveur fournissant l'API de l'application calendrier",
   "main": "app.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "latest",
     "express": "^4.16.4",

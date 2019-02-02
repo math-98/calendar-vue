@@ -5,9 +5,8 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 
-const users = [
-    { email: 'pcavalet@kaliop.com', password: 'kaliop' }
-];
+const port = 3000;
+const users = [];
 const secret = 'thisismysecret';
 
 const ExtractJwt = passportJWT.ExtractJwt;
@@ -39,16 +38,16 @@ app.get('/private', passport.authenticate('jwt', { session: false }), (req, res)
 });
 
 app.post('/login', urlEncodedParser, (req, res) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
-    if (!email || !password) {
-        res.status(401).json({ error: 'Email or password was not provided.'});
+    if (!username || !password) {
+        res.status(401).json({ error: 'Username or password was not provided' });
         return
     }
 
-    const user = users.find(user => user.email === email);
+    const user = users.find(user => user.username === username);
     if (!user || user.password !== password) {
-        res.status(401).json({ error: 'Email / password do not match.'});
+        res.status(401).json({ error: 'Username / password do not match' });
         return
     }
 
@@ -56,6 +55,6 @@ app.post('/login', urlEncodedParser, (req, res) => {
     res.json({ jwt: userJwt })
 });
 
-app.listen(3000, () => {
-    console.log('app running on port 3000')
+app.listen(port, () => {
+    console.log('Server running on port '+port)
 });

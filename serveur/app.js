@@ -37,6 +37,23 @@ app.get('/private', passport.authenticate('jwt', { session: false }), (req, res)
     res.send('Hello ' + req.user.email)
 });
 
+app.post('/register', urlEncodedParser, (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!username || !password) {
+        res.status(401).json({ error: 'Username or password was not provided' });
+        return
+    }
+
+    const user = users.find(user => user.username === username);
+    if (user) {
+        res.status(403).json({ error: "User "+username+" already exists" });
+    }
+
+    users.push({ username: username, password: password });
+    res.json({ message: 'Sucessfully registered' });
+});
+
 app.post('/login', urlEncodedParser, (req, res) => {
     const username = req.body.username;
     const password = req.body.password;

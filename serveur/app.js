@@ -77,7 +77,12 @@ app.get('/delete/:id', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 app.get('/list', passport.authenticate('jwt', { session: false }), (req, res) => {
-    const ret = events.find(event => event.author === req.user.username);
+    const ret = [];
+    events.forEach(event => {
+        if (event.author === req.user.username) {
+            ret.push(event);
+        }
+    });
 
     return res.json({ events: ret });
 });

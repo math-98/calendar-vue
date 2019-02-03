@@ -7,6 +7,8 @@ const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 
 const port = 3000;
 const users = [];
+const events = [];
+var eventCount = 0;
 const secret = 'thisismysecret';
 
 const ExtractJwt = passportJWT.ExtractJwt;
@@ -29,19 +31,79 @@ const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
 passport.use(jwtStrategy);
 const app = express();
 
-app.get('/public', (req, res) => {
-    res.send('I am public folks!')
+app.post('/add', passport.authenticate('jwt', { session: false }), urlEncodedParser, (req, res) => {
+    const title = req.body.title;
+    const description = req.body.description;
+    const start = req.body.start;
+    const end = req.body.end;
+    const allDay = req.body.allDay;
+
+    if (!title || !description || ((!start || !end) && !allDay)) {
+        res.status(400).json({ error: "Missing one of these required parameters: title, description, start, end" });
+    }
+
+    eventCount++;
+
+    events.push({
+        id: eventCount,
+        author: req.user.username,
+        title: title,
+        description: description,
+        start: start,
+        end: end,
+        allDay: allDay,
+    });
+    res.json({ id: eventCount });
 });
 
-app.get('/private', passport.authenticate('jwt', { session: false }), (req, res) => {
-    res.send('Hello ' + req.user.email)
+app.get('/delete/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (isNaN(req.params.id)) {
+        return res.status(400).json({ error: "Parameter id must be a number" });
+    }
+
+    const event = events.find(event => event.id === parseInt(req.params.id));
+    if (!event) {
+        return res.status(404).json({ error: "Event not found" });
+    }
+
+    if (event.author !== req.user.username) {
+        return res.status(403).json({ error: "Forbidden access" })
+    }
+
+    const key = events.indexOf(event);
+    events.splice(key, 1);
+
+    return res.json({ message: "Successfully deleted" });
+});
+
+app.get('/list', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const ret = events.find(event => event.author === req.user.username);
+
+    return res.json({ events: ret });
+});
+
+app.get('/get/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (isNaN(req.params.id)) {
+        return res.status(400).json({ error: "Parameter id must be a number" });
+    }
+
+    const event = events.find(event => event.id === parseInt(req.params.id));
+    if (!event) {
+        return res.status(404).json({ error: "Event not found" });
+    }
+
+    if (event.author !== req.user.username) {
+        return res.status(403).json({ error: "Forbidden access" })
+    }
+
+    return res.json({ event: event });
 });
 
 app.post('/register', urlEncodedParser, (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (!username || !password) {
-        res.status(401).json({ error: 'Username or password was not provided' });
+        res.status(400).json({ error: 'Username or password was not provided' });
         return
     }
 
@@ -58,7 +120,7 @@ app.post('/login', urlEncodedParser, (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (!username || !password) {
-        res.status(401).json({ error: 'Username or password was not provided' });
+        res.status(400).json({ error: 'Username or password was not provided' });
         return
     }
 

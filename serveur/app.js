@@ -6,7 +6,7 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const users = [];
 const events = [];
 var eventCount = 0;

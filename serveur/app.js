@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const urlEncodedParser = bodyParser.urlencoded({ extended: false });
@@ -34,16 +35,27 @@ const app = express();
 app.post('/add', passport.authenticate('jwt', { session: false }), urlEncodedParser, (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
-    const start = req.body.start;
-    const end = req.body.end;
+    let start = req.body.start;
+    let end = req.body.end;
     const allDay = req.body.allDay;
 
-    if (!title || !description || ((!start || !end) && !allDay)) {
+    if (!title || !description || !start || (!end && !allDay)) {
         res.status(400).json({ error: "Missing one of these required parameters: title, description, start, end" });
     }
 
-    eventCount++;
+    if (moment(start).isValid()) {
+       start = moment(start).format();
+    } else {
+        res.status(400).json({ error: "Parameter start must be a valid date" });
+    }
 
+    if (end && moment(end).isValid()) {
+        end = moment(end).format();
+    } else if (end) {
+        res.status(400).json({ error: "Parameter end must be a valid date" });
+    }
+
+    eventCount++;
     events.push({
         id: eventCount,
         author: req.user.username,

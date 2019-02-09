@@ -13,7 +13,8 @@ node app.js
 La console vous indique sur quel port le serveur tourne
 
 ### **Routes**
-####POST /add
+**POST /add**
+
 Ajoute un évènement
  - Authentification requise
  
@@ -33,7 +34,8 @@ allDay: BOOLEAN #Dure toute la journée? (Facultatif, defaut=false)
 }
 ```
 
-####GET /delete/:id
+**GET /delete/:id**
+
 Supprime un évènement
 
  - Authentification requise
@@ -49,7 +51,8 @@ Supprime un évènement
 }
 ``` 
 
-####GET /list
+**GET /list**
+
 Retourne la liste des évènements de l'utilisateur
 
  - Authentification requise
@@ -77,7 +80,8 @@ Retourne la liste des évènements de l'utilisateur
 }
 ```
  
-####GET /get/:id
+**GET /get/:id**
+
 Récupère un évènement
 
  - Authentification requise
@@ -101,7 +105,8 @@ Récupère un évènement
 }
 ```
  
-####POST /register
+**POST /register**
+
 Crée un compte sur le serveur
 
  - Format de la requête
@@ -120,7 +125,8 @@ password: STRING #Mot de passe (REQUIS)
 }
 ```
 
-####POST /login
+**POST /login**
+
 Retourne un JWT pour permettre l'accès aux sections privées
 
  - Format de la requête
@@ -138,7 +144,8 @@ password: STRING #Mot de passe (REQUIS)
   "jwt": "..."
 }
 ```
-####Erreurs
+
+### Erreurs
  - Le code de retour est différent de 200
 
  - Exemple de message d'erreur

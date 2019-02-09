@@ -2,6 +2,7 @@
   "name": "calendar-js-server",
   "version": "1.0.0",
   "description": "Le serveur fournissant l'API de l'application calendrier",
+  "author": "Mathieu SERVIERE <mathieu@math98.fr>",
   "main": "app.js",
   "private": true,
   "scripts": {

@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const passport = require('passport');
@@ -31,6 +32,8 @@ const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
 
 passport.use(jwtStrategy);
 const app = express();
+
+app.use(cors());
 
 app.post('/add', passport.authenticate('jwt', { session: false }), urlEncodedParser, (req, res) => {
     const title = req.body.title;
@@ -136,6 +139,7 @@ app.post('/register', urlEncodedParser, (req, res) => {
 app.post('/login', urlEncodedParser, (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    console.log(req.body);
     if (!username || !password) {
         res.status(400).json({ error: 'Username or password was not provided' });
         return

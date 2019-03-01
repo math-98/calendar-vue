@@ -7,6 +7,22 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted () {
+    if (this.$cookies.isKey('vuecalendar-jwt')) {
+      this.jwt = this.$cookies.get('vuecalendar-jwt')
+    }
+  },
+  data: function () {
+    return {
+      jwt: ''
+    }
+  },
+  methods: {
+    login (val) {
+      this.$cookies.set('vuecalendar-jwt', val)
+      this.jwt = val
+    }
+  }
 }
 </script>

@@ -15,6 +15,12 @@ Vue.config.productionTip = false
 Vue.use(require('vue-cookies'))
 Vue.use(BootstrapVue)
 
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title + ' - VueCalendar'
+
+  next()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

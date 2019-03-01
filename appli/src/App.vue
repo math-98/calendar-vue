@@ -1,13 +1,29 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <Navigation :jwt="jwt"/>
+    <my-header :title="this.$route.meta.title"/>
+    <div class="container">
+      <login v-if="!jwt" @login="login"/>
+      <router-view :jwt="jwt" v-else/>
+    </div>
+    <my-footer/>
   </div>
 </template>
 
 <script>
+import Login from '@/components/Login'
+import myHeader from '@/components/Header'
+import myFooter from '@/components/Footer'
+import Navigation from '@/components/Navigation'
+
 export default {
   name: 'App',
+  components: {
+    Login,
+    myHeader,
+    myFooter,
+    Navigation
+  },
   mounted () {
     if (this.$cookies.isKey('vuecalendar-jwt')) {
       this.jwt = this.$cookies.get('vuecalendar-jwt')

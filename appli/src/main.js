@@ -2,9 +2,18 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import BootstrapVue from 'bootstrap-vue'
 import router from './router'
 
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import './assets/css/scrolling-nav.css'
+import 'fullcalendar/dist/fullcalendar.css'
+
 Vue.config.productionTip = false
+Vue.use(require('vue-cookies'))
+Vue.use(BootstrapVue)
 
 /* eslint-disable no-new */
 new Vue({

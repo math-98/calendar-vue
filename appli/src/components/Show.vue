@@ -1,22 +1,31 @@
 <template>
   <section>
-    <template v-if="!transmiting">
+    <loading v-if="transmiting"/>
+    <template v-else>
       <b-alert variant="danger" show dismissible v-if="error">{{ error }}</b-alert>
       <h1>{{ this.event.title }}</h1>
       Du {{ this.event.start }} au {{ this.event.end }}<br/>
       <br/>
       {{ this.event.description }}<br/>
       <br/>
-      <b-button class="col-12" variant="danger" @click="deleteEvent">Supprimer</b-button>
+      <b-button variant="danger" class="btn-block" disabled v-if="transmiting">
+        <b-spinner small type="grow"/>
+        Chargement...
+      </b-button>
+      <b-button class="btn-block" variant="danger" @click="deleteEvent" v-else>Supprimer</b-button>
     </template>
   </section>
 </template>
 
 <script>
+import Loading from '@/components/Loading'
 import moment from 'moment'
 
 export default {
   name: 'Show',
+  components: {
+    Loading
+  },
   props: [
     'axios'
   ],

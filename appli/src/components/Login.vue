@@ -14,7 +14,12 @@
         <b-form-group label="Mot de passe" label-for="passwordLogin">
           <b-form-input id="passwordLogin" type="password" placeholder="Entrez votre mot de passe" v-model="password" required/>
         </b-form-group>
-        <b-button class="col-12" type="submit" variant="primary" v-if="!transmiting">Envoyer</b-button>
+
+        <b-button variant="primary" class="btn-block" disabled v-if="transmiting">
+          <b-spinner small type="grow"/>
+          Chargement...
+        </b-button>
+        <b-button type="submit" variant="primary" class="btn-block" v-else>Envoyer</b-button>
       </form>
       <div slot="modal-footer"></div>
     </b-modal>
@@ -36,7 +41,12 @@
         <b-form-group label="Confirmation du mot de passe" label-for="confirmPasswordRegister">
           <b-form-input id="confirmPasswordRegister" type="password" placeholder="Confirmez votre mot de passe" v-model="password_confirm" required/>
         </b-form-group>
-        <b-button class="col-12" type="submit" variant="primary" v-if="!transmiting">Envoyer</b-button>
+
+        <b-button variant="primary" class="btn-block" disabled v-if="transmiting">
+          <b-spinner small type="grow"/>
+          Chargement...
+        </b-button>
+        <b-button type="submit" variant="primary" class="btn-block" v-else>Envoyer</b-button>
       </form>
       <div slot="modal-footer"></div>
     </b-modal>

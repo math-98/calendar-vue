@@ -24,7 +24,11 @@
         <b-form-input type="time" v-model="endTime" v-if="!allDay"/>
       </b-form-group>
 
-      <b-button type="submit" variant="primary" class="col-12" v-if="!transmiting">Envoyer</b-button>
+      <b-button variant="primary" class="btn-block" disabled v-if="transmiting">
+        <b-spinner small type="grow"/>
+        Chargement...
+      </b-button>
+      <b-button type="submit" variant="primary" class="btn-block" v-else>Envoyer</b-button>
     </b-form>
   </section>
 </template>

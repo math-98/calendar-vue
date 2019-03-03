@@ -1,11 +1,13 @@
 <template>
   <section>
     <b-alert variant="danger" show dismissible v-if="error">{{ error }}</b-alert>
+    <loading v-if="transmiting"/>
     <FullCalendar
       ref="calendar"
       :events="calEvents"
       :config="calendar_config"
       @event-selected="eventClick"
+      v-show="!transmiting"
     />
     <b-modal
       id="modalEvent"
@@ -18,7 +20,11 @@
       {{ this.selected_event.description }}<br/>
       <br/>
       <router-link :to="{ name: 'show', params: { id: this.selected_event.id }}" class="btn btn-block btn-primary">Voir</router-link>
-      <b-button class="col-12" variant="danger" @click="deleteSelected" v-if="!transmiting">Supprimer</b-button>
+      <b-button variant="danger" class="btn-block" disabled v-if="transmiting">
+        <b-spinner small type="grow"/>
+        Chargement...
+      </b-button>
+      <b-button class="btn-block" variant="danger" @click="deleteSelected" v-else>Supprimer</b-button>
       <div slot="modal-footer"></div>
     </b-modal>
   </section>
@@ -26,18 +32,21 @@
 
 <script>
 import { FullCalendar } from 'vue-full-calendar'
+import Loading from '@/components/Loading'
 import 'fullcalendar/dist/locale/fr'
 import moment from 'moment'
 
 export default {
   name: 'Home',
   components: {
-    FullCalendar
+    FullCalendar,
+    Loading
   },
   props: [
     'axios'
   ],
   mounted () {
+    this.transmiting = true
     this.axios.request({
       method: 'get',
       url: '/list'

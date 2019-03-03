@@ -3,7 +3,8 @@
     <Navigation :jwt="jwt" @logout="logout"/>
     <my-header :title="this.$route.meta.title"/>
     <div class="container">
-      <section v-if="error">
+      <loading v-if="transmiting"/>
+      <section v-else-if="error">
         <b-alert variant="danger" show dismissible>{{ error }}</b-alert>
       </section>
       <router-view :axios="axiosInstance" v-else-if="jwt"/>
@@ -18,6 +19,7 @@ import Login from '@/components/Login'
 import myHeader from '@/components/Header'
 import myFooter from '@/components/Footer'
 import Navigation from '@/components/Navigation'
+import Loading from '@/components/Loading'
 import axios from 'axios'
 
 export default {
@@ -26,7 +28,8 @@ export default {
     Login,
     myHeader,
     myFooter,
-    Navigation
+    Navigation,
+    Loading
   },
   mounted () {
     if (this.$cookies.isKey('vuecalendar-jwt')) {
@@ -36,7 +39,8 @@ export default {
   data: function () {
     return {
       jwt: '',
-      error: ''
+      error: '',
+      transmiting: false
     }
   },
   computed: {
@@ -53,6 +57,7 @@ export default {
   methods: {
     login (val) {
       this.$cookies.set('vuecalendar-jwt', val)
+      this.transmiting = true
       this.axiosInstance.request({
         method: 'get',
         url: '/check-auth',
@@ -60,12 +65,14 @@ export default {
       })
         .then(() => {
           this.jwt = val
+          this.transmiting = false
         })
         .catch((error) => {
           if (error.response.status !== 401) {
             this.error = 'Une erreur est survenue lors du traitement de la requête, consultez la console pour plus d\'infos'
             console.error(error)
           }
+          this.transmiting = false
         })
     },
     logout () {

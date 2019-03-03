@@ -12,6 +12,7 @@
       <br/>
       {{ this.selected_event.description }}<br/>
       <br/>
+      <router-link :to="{ name: 'show', params: { id: this.selected_event.id }}" class="btn btn-block btn-primary">Voir</router-link>
       <b-button class="col-12" variant="danger" @click="deleteSelected" v-if="!transmiting">Supprimer</b-button>
       <div slot="modal-footer"></div>
     </b-modal>

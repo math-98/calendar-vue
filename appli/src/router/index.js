@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Home from '@/components/Home'
+import Show from '@/components/Show'
 import Router from 'vue-router'
 
 Vue.use(Router)
@@ -12,9 +13,14 @@ export default new Router({
       component: Home,
       meta: {
         title: 'Accueil'
-      },
-      header_title: 'Router title',
-      header_text: 'Router text'
+      }
+    }, {
+      path: '/event/:id',
+      name: 'show',
+      component: Show,
+      meta: {
+        title: 'Évènement'
+      }
     }
   ]
 })

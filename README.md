@@ -145,6 +145,19 @@ password: STRING #Mot de passe (REQUIS)
 }
 ```
 
+**GET /check-auth**
+
+Récupère un évènement
+
+ - Authentification requise
+ 
+ - Format de la réponse
+ ```json
+{
+  "message": "Success"
+}
+```
+
 ### Erreurs
  - Le code de retour est différent de 200
 

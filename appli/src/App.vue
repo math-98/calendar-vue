@@ -3,8 +3,11 @@
     <Navigation :jwt="jwt" @logout="logout"/>
     <my-header :title="this.$route.meta.title"/>
     <div class="container">
-      <login :axios="axiosInstance" @login="login" v-if="!jwt"/>
-      <router-view :axios="axiosInstance" v-else/>
+      <section v-if="error">
+        <b-alert variant="danger" show dismissible>{{ error }}</b-alert>
+      </section>
+      <router-view :axios="axiosInstance" v-else-if="jwt"/>
+      <login :axios="axiosInstance" @login="login" v-else/>
     </div>
     <my-footer/>
   </div>
@@ -32,7 +35,8 @@ export default {
   },
   data: function () {
     return {
-      jwt: ''
+      jwt: '',
+      error: ''
     }
   },
   computed: {
@@ -49,7 +53,20 @@ export default {
   methods: {
     login (val) {
       this.$cookies.set('vuecalendar-jwt', val)
-      this.jwt = val
+      this.axiosInstance.request({
+        method: 'get',
+        url: '/check-auth',
+        headers: {'Authorization': 'Bearer ' + val}
+      })
+        .then(() => {
+          this.jwt = val
+        })
+        .catch((error) => {
+          if (error.response.status !== 401) {
+            this.error = 'Une erreur est survenue lors du traitement de la requête, consultez la console pour plus d\'infos'
+            console.error(error)
+          }
+        })
     },
     logout () {
       this.$cookies.remove('vuecalendar-jwt')

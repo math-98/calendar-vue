@@ -151,6 +151,10 @@ app.post('/login', urlEncodedParser, (req, res) => {
     return res.json({ jwt: userJwt })
 });
 
+app.get('/check-auth', passport.authenticate('jwt', { session: false }), (req, res) => {
+    return res.json({ message: 'Success' });
+});
+
 app.listen(port, () => {
     console.log('Server running on port '+port)
 });

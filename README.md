@@ -8,7 +8,7 @@ Pour installer et lancer le serveur en local,
 ```
 cd serveur
 npm install
-node app.js
+node run start
 ``` 
 La console vous indique sur quel port le serveur tourne
 

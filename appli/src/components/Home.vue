@@ -1,7 +1,12 @@
 <template>
   <section>
     <b-alert variant="danger" show dismissible v-if="error">{{ error }}</b-alert>
-    <FullCalendar ref="calendar" :events="events" :config="calendar_config" @event-selected="eventClick"></FullCalendar>
+    <FullCalendar
+      ref="calendar"
+      :events="calEvents"
+      :config="calendar_config"
+      @event-selected="eventClick"
+    />
     <b-modal
       id="modalEvent"
       ref="modalEvent"
@@ -60,11 +65,36 @@ export default {
       transmiting: false
     }
   },
+  computed: {
+    calEvents: function () {
+      let events = []
+      this.events.forEach((event) => {
+        let newEvent = {}
+        for (let i in event) {
+          newEvent[i] = event[i]
+        }
+        if (newEvent.allDay) {
+          newEvent.end = moment(newEvent.end).add(1, 'day').format()
+        }
+        events.push(newEvent)
+      })
+      return events
+    }
+  },
   methods: {
     eventClick (val) {
-      this.selected_event = val
-      this.selected_event.start = moment(this.selected_event.start).format('dddd D MMMM Y HH:mm')
-      this.selected_event.end = moment(this.selected_event.end).format('dddd D MMMM Y HH:mm')
+      this.selected_event = {}
+      let event = this.events.find(event => event.id === val.id)
+      for (let i in event) {
+        this.selected_event[i] = event[i]
+      }
+      if (this.selected_event.allDay) {
+        this.selected_event.start = moment(this.selected_event.start).format('dddd D MMMM Y')
+        this.selected_event.end = moment(this.selected_event.end).format('dddd D MMMM Y')
+      } else {
+        this.selected_event.start = moment(this.selected_event.start).format('dddd D MMMM Y HH:mm')
+        this.selected_event.end = moment(this.selected_event.end).format('dddd D MMMM Y HH:mm')
+      }
       this.$nextTick(() => {
         this.$refs.modalEvent.show()
       })

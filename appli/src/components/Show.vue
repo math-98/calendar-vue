@@ -32,8 +32,13 @@ export default {
         this.error = ''
         this.event = response.data.event
         this.$nextTick(() => {
-          this.event.start = moment(this.event.start).format('dddd D MMMM Y HH:mm')
-          this.event.end = moment(this.event.end).format('dddd D MMMM Y HH:mm')
+          if (this.event.allDay) {
+            this.event.start = moment(this.event.start).format('dddd D MMMM Y')
+            this.event.end = moment(this.event.end).format('dddd D MMMM Y')
+          } else {
+            this.event.start = moment(this.event.start).format('dddd D MMMM Y HH:mm')
+            this.event.end = moment(this.event.end).format('dddd D MMMM Y HH:mm')
+          }
         })
       })
       .catch((error) => {

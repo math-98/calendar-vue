@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Home from '@/components/Home'
+import Add from '@/components/Add'
 import Show from '@/components/Show'
 import Router from 'vue-router'
 
@@ -13,6 +14,13 @@ export default new Router({
       component: Home,
       meta: {
         title: 'Accueil'
+      }
+    }, {
+      path: '/event/add',
+      name: 'add',
+      component: Add,
+      meta: {
+        title: 'Ajouter un évènement'
       }
     }, {
       path: '/event/:id',

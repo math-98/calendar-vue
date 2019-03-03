@@ -23,7 +23,7 @@ Ajoute un évènement
 title: STRING #Titre (REQUIS)
 description: STRING #Description (REQUIS)
 start: DATE #Date de début (REQUIS)
-end: DATE #Date de fin (Requis sauf si allDay=true)
+end: DATE #Date de fin (REQUIS)
 allDay: BOOLEAN #Dure toute la journée? (Facultatif, defaut=false)
 ```
 
@@ -47,7 +47,7 @@ Supprime un évènement
  - Format de la réponse
 ```json
 {
-  "message": "Sucessfully deleted"
+  "message": "Successfully deleted"
 }
 ``` 
 
@@ -121,7 +121,7 @@ password: STRING #Mot de passe (REQUIS)
  - Format de la réponse
  ```json
 {
-  "message": "Sucessfully registered"
+  "message": "Successfully registered"
 }
 ```
 

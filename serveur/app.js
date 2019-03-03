@@ -40,22 +40,22 @@ app.post('/add', passport.authenticate('jwt', { session: false }), urlEncodedPar
     const description = req.body.description;
     let start = req.body.start;
     let end = req.body.end;
-    const allDay = req.body.allDay;
+    const allDay = (req.body.allDay == "true");
 
-    if (!title || !description || !start || (!end && !allDay)) {
-        res.status(400).json({ error: "Missing one of these required parameters: title, description, start, end" });
+    if (!title || !description || !start || !end) {
+        return res.status(400).json({ error: "Missing one of these required parameters: title, description, start, end" });
     }
 
     if (moment(start).isValid()) {
        start = moment(start).format();
     } else {
-        res.status(400).json({ error: "Parameter start must be a valid date" });
+        return res.status(400).json({ error: "Parameter start must be a valid date" });
     }
 
-    if (end && moment(end).isValid()) {
+    if (moment(end).isValid()) {
         end = moment(end).format();
-    } else if (end) {
-        res.status(400).json({ error: "Parameter end must be a valid date" });
+    } else {
+        return res.status(400).json({ error: "Parameter end must be a valid date" });
     }
 
     eventCount++;
@@ -68,7 +68,7 @@ app.post('/add', passport.authenticate('jwt', { session: false }), urlEncodedPar
         end: end,
         allDay: allDay,
     });
-    res.json({ id: eventCount });
+    return res.json({ id: eventCount });
 });
 
 app.get('/delete/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -123,36 +123,32 @@ app.post('/register', urlEncodedParser, (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (!username || !password) {
-        res.status(400).json({ error: 'Username or password was not provided' });
-        return
+        return res.status(400).json({ error: 'Username or password was not provided' });
     }
 
     const user = users.find(user => user.username === username);
     if (user) {
-        res.status(403).json({ error: "User "+username+" already exists" });
+        return res.status(403).json({ error: "User "+username+" already exists" });
     }
 
     users.push({ username: username, password: password });
-    res.json({ message: 'Sucessfully registered' });
+    return res.json({ message: 'Successfully registered' });
 });
 
 app.post('/login', urlEncodedParser, (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    console.log(req.body);
     if (!username || !password) {
-        res.status(400).json({ error: 'Username or password was not provided' });
-        return
+        return res.status(400).json({ error: 'Username or password was not provided' });
     }
 
     const user = users.find(user => user.username === username);
     if (!user || user.password !== password) {
-        res.status(401).json({ error: 'Username / password do not match' });
-        return
+        return res.status(401).json({ error: 'Username / password do not match' });
     }
 
     const userJwt = jwt.sign({ user: user.email }, secret);
-    res.json({ jwt: userJwt })
+    return res.json({ jwt: userJwt })
 });
 
 app.listen(port, () => {

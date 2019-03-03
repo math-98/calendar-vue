@@ -11,7 +11,7 @@ import 'fullcalendar/dist/locale/fr'
 export default {
   name: 'Home',
   props: [
-    'jwt'
+    'axios'
   ],
   data () {
     return {

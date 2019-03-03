@@ -3,8 +3,8 @@
     <Navigation :jwt="jwt" @logout="logout"/>
     <my-header :title="this.$route.meta.title"/>
     <div class="container">
-      <login v-if="!jwt" @login="login"/>
-      <router-view :jwt="jwt" v-else/>
+      <login :axios="axiosInstance" @login="login" v-if="!jwt"/>
+      <router-view :axios="axiosInstance" v-else/>
     </div>
     <my-footer/>
   </div>
@@ -15,6 +15,7 @@ import Login from '@/components/Login'
 import myHeader from '@/components/Header'
 import myFooter from '@/components/Footer'
 import Navigation from '@/components/Navigation'
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -26,13 +27,23 @@ export default {
   },
   mounted () {
     if (this.$cookies.isKey('vuecalendar-jwt')) {
-      this.jwt = this.$cookies.get('vuecalendar-jwt')
-      this.$cookies.set('vuecalendar-jwt', this.jwt)
+      this.login(this.$cookies.get('vuecalendar-jwt'))
     }
   },
   data: function () {
     return {
       jwt: ''
+    }
+  },
+  computed: {
+    axiosInstance: function () {
+      let props = {
+        baseURL: process.env.API_BASE_URL
+      }
+      if (this.jwt) {
+        props.headers = {'Authorization': 'Bearer ' + this.jwt}
+      }
+      return axios.create(props)
     }
   },
   methods: {

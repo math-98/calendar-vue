@@ -51,13 +51,11 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Login',
-  mounted () {
-    this.$refs.modalLogin.show()
-  },
+  props: [
+    'axios'
+  ],
   data () {
     return {
       'error': '',
@@ -74,6 +72,7 @@ export default {
       this.error = ''
       this.username = ''
       this.password = ''
+      this.password_confirm = ''
     },
     submitLogin (evt) {
       if (!this.transmiting) {
@@ -84,20 +83,15 @@ export default {
         params.append('username', this.username)
         params.append('password', this.password)
 
-        axios({
+        this.axios.request({
           method: 'post',
-          url: 'https://math98-calendarjs.herokuapp.com/login',
+          url: '/login',
           data: params
         })
           .then((response) => {
             this.transmiting = false
             this.$emit('login', response.data.jwt)
             console.log(response)
-
-            this.clearFields()
-            this.$nextTick(() => {
-              this.$refs.modalLogin.hide()
-            })
           })
           .catch((error) => {
             switch (error.response.status) {
@@ -108,7 +102,7 @@ export default {
                 this.error = 'Une erreur est survenue lors du traitement de la requête, consultez la console pour plus d\'infos'
                 break
             }
-            console.error(error.response)
+            console.error(error)
             this.transmiting = false
           })
       }
@@ -123,9 +117,9 @@ export default {
           params.append('username', this.username)
           params.append('password', this.password)
 
-          axios({
+          this.axios.request({
             method: 'post',
-            url: 'https://math98-calendarjs.herokuapp.com/register',
+            url: '/register',
             data: params
           })
             .then((response) => {
@@ -144,7 +138,7 @@ export default {
                   this.error = 'Une erreur est survenue lors du traitement de la requête, consultez la console pour plus d\'infos'
                   break
               }
-              console.error(error.response)
+              console.error(error)
               this.transmiting = false
             })
         } else {

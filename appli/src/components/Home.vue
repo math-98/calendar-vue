@@ -68,7 +68,8 @@ export default {
       events: [],
       selected_event: undefined,
       calendar_config: {
-        themeSystem: 'bootstrap4'
+        themeSystem: 'bootstrap4',
+        timezone: 'local'
       },
       error: '',
       transmiting: false

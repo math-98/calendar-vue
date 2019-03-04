@@ -2,13 +2,13 @@
 Une application de calendrier en VueJS
 
 ## Serveur
-Une version hébergée du serveur est disponible sur [heroku](https://math98-calendarjs.herokuapp.com/)
+Une version hébergée du serveur est disponible sur [Heroku](https://math98-calendarjs.herokuapp.com/)
 
 Pour installer et lancer le serveur en local,
 ```
 cd serveur
 npm install
-node run start
+npm run start
 ``` 
 La console vous indique sur quel port le serveur tourne
 
@@ -167,3 +167,17 @@ Récupère un évènement
   "error": "Event not found"
 }
 ```
+
+## Client
+
+Une version hébergée de l'application est disponible sur [Netlify](https://math98-vuecalendar.netlify.com/)
+
+Pour installer et lancer l'application en local,
+```
+cd appli
+npm install
+npm run start
+``` 
+La console vous indique l'addresse où trouver l'application.
+
+**Attention, l'application en local nécessite également un serveur local sur le port 3000 !**

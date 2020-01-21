@@ -18,7 +18,7 @@
     "axios": "0.19.1",
     "bootstrap": "4.4.1",
     "bootstrap-vue": "2.2.2",
-    "jquery": "3.4.0",
+    "jquery": "3.4.1",
     "moment": "2.24.0",
     "vue": "2.6.7",
     "vue-cookies": "1.5.12",

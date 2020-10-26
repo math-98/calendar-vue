@@ -19,7 +19,7 @@
     "bootstrap": "4.4.1",
     "bootstrap-vue": "2.2.2",
     "jquery": "3.4.1",
-    "moment": "2.24.0",
+    "moment": "2.29.1",
     "vue": "2.6.11",
     "vue-cookies": "1.6.1",
     "vue-full-calendar": "2.7.0",
